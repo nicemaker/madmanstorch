@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static "ongoingon/style/jquery-ui-1.10.2.custom.css" %}">
+<script src="{% static "ongoingon/js/jquery-1.9.1.min.js" %}"></script>
+<script src="{% static "ongoingon/js/jquery-ui-1.10.2.custom.min.js" %}"></script>
+
+<script>
+    $(document).ready( function(){
+        $('video').bind('canplay',onVideo);
+        $('#overlay').load( onImage );
+        onResize(null);
+    })
+    
+    function onImage( e ){
+       var canvas = $('canvas')[0]
+        var ct = canvas.getContext('2d');
+        
+       ct.clearRect(0, 0, canvas.width, canvas.height)
+       ct.drawImage( $('#overlay')[0],0,0,canvas.width,canvas.height );
+    }
+    
+    var c = 0;
+    function onVideo( e ){
+        
+          e.currentTarget.play();
+    }
+    
+     function onResize(e){
+        var w = $(window).width();
+        var h = $(window).height();
+        
+        var ratio = w/h;
+        
+        w = parseInt(ratio < 16/9 ? w : h/9*16);
+        h = parseInt( ratio > 16/9 ? h : w/16*9 );
+        
+        $('#content').css({width:w,height:h});
+        $('canvas').attr('width',w);
+        $('canvas').attr('height',h);
+        //$('video').css({width:w,height:h});
+
+        alert(w + ',' + h);
+    }
+    
+</script>
+
+<link href='http://fonts.googleapis.com/css?family=Merriweather+Sans:300' rel='stylesheet' type='text/css'>
+</head>
+	<body style="padding:0px;margin:0px">
+	  <img id="overlay" src="{% static "ongoingon/images/home.png" %}" style="display:none"/>
+	   
+            {% for snippet in snippets %}
+                <video  autoplay="true" style="position:absolute;left:0px;" width="400" height="300">
+                    <source src="{{MEDIA_URL}}{{snippet.fileMp4.name}}" type="video/mp4">
+                    <source src="{{MEDIA_URL}}{{snippet.fileWebM.name}}" type="video/webm">
+                </video>
+            {% endfor %}	
+            
+             {% for snippet in snippets %}
+                <video  autoplay="true" style="position:absolute;left:400px;" width="400" height="300">
+                    <source src="{{MEDIA_URL}}{{snippet.fileMp4.name}}" type="video/mp4">
+                    <source src="{{MEDIA_URL}}{{snippet.fileWebM.name}}" type="video/webm">
+                </video>
+            {% endfor %}		
+		   
+	
+	   
+        <div id="content" style="position:absolute">
+			<canvas id="bgCanvas" width="800" height="450" style="position:absolute"></canvas>
+		</div>
+		
+		
+		
+		
+	</body>
+</html>

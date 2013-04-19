@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "ongoingon/style/main.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "ongoingon/style/jquery-ui-1.10.2.custom.css" %}">
+<script src="{% static "ongoingon/js/jquery-1.9.1.min.js" %}"></script>
+<script src="{% static "ongoingon/js/jquery-ui-1.10.2.custom.min.js" %}"></script>
+<script src="{% static "ongoingon/js/mdmn.js" %}"></script>
+
+</head>
+	<body>
+	    
+        <div id="content">
+            
+            <div id="logo"></div>
+            
+            <img id="background" src="{% static "ongoingon/images/home.jpg" %}"/>
+			<img id="overlay" src="{% static "ongoingon/images/overlay_min.png" %}" />
+
+			<div id="slides">
+			
+				<div id="index">
+				    
+				    <video id="backVideo" >
+				        <source src="" type="video/mp4">
+				        <source src="" type="video/webm">
+			        </video>
+			        
+                    <canvas width="980" height="550"></canvas>
+                    
+                    <h1 class="name">THE MAD MANS TORCH</h1>
+                    
+					<div id="insights">
+					{% for insight in insights %}
+				  
+						<div class="insight" data-mp4="{{MEDIA_URL}}{{insight.fileMp4.name}}" data-webm="{{MEDIA_URL}}{{insight.fileWebM.name}}">
+						    {% if insight.screenShot %}
+						    <img src="{{MEDIA_URL}}{{insight.fileMp4.name}}" />
+						    {% endif %}			    	    
+							<video id="insight_{{insight.id}}">
+								<source src="{{MEDIA_URL}}{{insight.thumbMp4.name}}" type="video/mp4">
+								<source src="{{MEDIA_URL}}{{insight.thumbWebM.name}}" type="video/webm">
+							</video>
+							
+							<div class="play"></div>
+							<h3>{{ insight.title }}</h3>
+						
+
+						</div>
+						
+					{% endfor %}
+				    </div>
+				    
+				    <h1 class="name">THE MAD MANS TORCH</h1>
+				    
+				</div>
+						
+				<div id="insightPlayer">
+					<video autoplay="true">
+					    <source src="" type="video/mp4">
+						<source src="" type="video/webm">
+					</video>
+					<div class="controls">
+					    <div class="play"></div>
+						<div class="seek"></div>
+						<h3>{{ insight.title }}</h3>
+					</div>
+				</div>
+				
+		    </div>
+		    
+		    
+		    
+			<div id="menu">
+				<div id="ongoingon" class="menuItem"></div>
+				
+			</div>
+			
+		
+		</div>
+		
+		
+		
+		<div id="backVideoList">
+			{% for snippet in snippets %}
+				<div data-mp4="{{MEDIA_URL}}{{snippet.fileMp4.name}}" data-webm="{{MEDIA_URL}}{{snippet.fileWebM.name}}"></div>
+			{% endfor %}
+		</div>
+		
+	</body>
+</html>
